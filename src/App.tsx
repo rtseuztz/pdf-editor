@@ -8,7 +8,7 @@ import { RenderParameters } from 'pdfjs-dist/types/src/display/api';
 const pdfjsLib = require("pdfjs-dist/legacy/build/pdf.js");
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.js`;
 function App() {
-  //const [pdfBytes, getPdfBytes] = useState<Array<BigInteger>>([])
+  const [page, setPage] = useState<any>(undefined)
   const openPDF = async () => {
     const fileEle = document.getElementById("file_upload") as HTMLInputElement
     if (!fileEle || !fileEle.files) return;
@@ -26,29 +26,30 @@ function App() {
       // Fetch the first page
       var pageNumber = 1;
       pdf.getPage(pageNumber).then(function(page: any) {
-      console.log('Page loaded');
-      
-      var scale = 1.5;
-      var viewport = page.getViewport({scale: scale});
+        setPage(page);
+        console.log('Page loaded');
+        
+        var scale = 1.5;
+        var viewport = page.getViewport({scale: scale});
 
-      // Prepare canvas using PDF page dimensions
-      // eslint-disable-next-line testing-library/no-node-access
-      var canvas = document.getElementById('canvas') as HTMLCanvasElement;
-      if (!canvas) return;
-      var context: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
+        // Prepare canvas using PDF page dimensions
+        // eslint-disable-next-line testing-library/no-node-access
+        var canvas = document.getElementById('canvas') as HTMLCanvasElement;
+        if (!canvas) return;
+        var context: CanvasRenderingContext2D = canvas.getContext('2d') as CanvasRenderingContext2D;
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
 
-      // Render PDF page into canvas context
-      var renderContext: RenderParameters = {
-        canvasContext: context,
-        viewport: viewport
-      };
-      // eslint-disable-next-line testing-library/render-result-naming-convention
-      var renderTask = page.render(renderContext);
-      renderTask.promise.then(function () {
-        console.log('Page rendered');
-      });
+        // Render PDF page into canvas context
+        var renderContext: RenderParameters = {
+          canvasContext: context,
+          viewport: viewport
+        };
+        // eslint-disable-next-line testing-library/render-result-naming-convention
+        var renderTask = page.render(renderContext);
+        renderTask.promise.then(function () {
+          console.log('Page rendered');
+        });
     });
   }, function(reason: any) {
       console.error(reason);

@@ -12,3 +12,9 @@ test('renders learn react link', () => {
 test('open a pdf with bytes using pdf js lib', () => {
   //todo: implement this with a local test pdf
 });
+test('connected to backend', async () => {
+    const response = await fetch('http://localhost:3001/index.html');
+    const body = await response.json();
+    expect(response.status === 200).toBeTruthy();
+    console.log(body);
+  })

@@ -14,7 +14,6 @@ test('open a pdf with bytes using pdf js lib', () => {
 });
 test('connected to backend', async () => {
     const response = await fetch('http://localhost:3001/index.html');
-    const body = await response.json();
+    const body = response.json();
     expect(response.status === 200).toBeTruthy();
-    console.log(body);
   })
